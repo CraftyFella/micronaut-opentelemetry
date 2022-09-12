@@ -1,0 +1,63 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.5.3"
+    id 'de.undercouch.download' version '5.1.2'
+}
+
+def agentVerison = "1.17.0"
+def agentPath = project.buildDir.toString() + "/otel/opentelemetry-javaagent-all-${agentVerison}.jar"
+
+version = "0.1"
+group = "com.example"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut:micronaut-tracing")
+
+}
+
+
+application {
+    mainClass.set("com.example.Application")
+    println "Setting java agent to \"-javaagent:${agentPath}\""
+    applicationDefaultJvmArgs = [
+            "-javaagent:${agentPath}"
+    ]
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+task downloadAgent(type: Download) {
+    println "Downloading Agent to ${agentPath}"
+    src "https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v${agentVerison}/opentelemetry-javaagent.jar"
+    dest agentPath
+    overwrite false
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.example.*")
+    }
+}
+
+
+build.dependsOn downloadAgent
+
+
+

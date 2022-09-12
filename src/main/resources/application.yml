@@ -1,0 +1,11 @@
+micronaut:
+  application:
+    name: dave.demo.tracing
+otel:
+  traces:
+    exporter: otlp
+
+netty:
+  default:
+    allocator:
+      max-order: 3
