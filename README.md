@@ -43,7 +43,9 @@ Launch the application with :
 java  -javaagent:build/otel/opentelemetry-javaagent-all-1.17.0.jar -jar build/libs/demoOTLP-0.1-all.jar 
 ```
 
-Review distributed tracing in New Relic for the specified application, specifically:
-* Span Attributes do not contain the expected tag : `Dave`
-* Only a single Span is sent to new relic even though we have a Custom Span `slowThing` see [here](https://github.com/CraftyFella/micronaut-opentelemetry/blob/main/src/main/java/com/example/SlowThing.java) for custom span code.
+## What's working and what's not working
 
+* Working - A trace is being sent to new relic
+* Working - trace contains the timings and exceptions
+* Not working - custom span `slowThing` from [here](https://github.com/CraftyFella/micronaut-opentelemetry/blob/main/src/main/java/com/example/SlowThing.java) isn't being added to the trace.
+* Not working - additional attributes are not being added to the span `Dave` from [here](https://github.com/CraftyFella/micronaut-opentelemetry/blob/main/src/main/java/com/example/SlowThing.java)
