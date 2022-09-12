@@ -29,10 +29,6 @@ dependencies {
 
 application {
     mainClass.set("com.example.Application")
-    println "Setting java agent to \"-javaagent:${agentPath}\""
-    applicationDefaultJvmArgs = [
-            "-javaagent:${agentPath}"
-    ]
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
@@ -55,9 +51,6 @@ micronaut {
         annotations("com.example.*")
     }
 }
-
-
-build.dependsOn downloadAgent
 
 
 
