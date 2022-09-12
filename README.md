@@ -40,6 +40,7 @@ Download the OTLP agent with
 
 Launch the application with :
 ```
+./gradlew build
 java  -javaagent:build/otel/opentelemetry-javaagent-all-1.17.0.jar -jar build/libs/demoOTLP-0.1-all.jar 
 ```
 
