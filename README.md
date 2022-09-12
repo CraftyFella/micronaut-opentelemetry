@@ -1,4 +1,18 @@
-## Demo of Micronaut and OTLP instrumentation for New Relic
+## Broken Demo of Micronaut and OTLP instrumentation for New Relic
+
+Eventually Id like this to be an example of how to configure micronaut with open telemetry. Right now it's broken.
+
+It using the open telemetry agent from 
+
+https://github.com/open-telemetry/opentelemetry-java-instrumentation
+
+
+and the micronaut annotations for custom spans.
+
+https://micronaut-projects.github.io/micronaut-tracing/latest/guide/#annotations
+
+
+## To run the demo:
 
 Set these environment variables:
 
