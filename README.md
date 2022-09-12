@@ -21,7 +21,7 @@ Replace `your_license_key` with your [Account License Key](https://one.newrelic.
 
 Download the OTLP agent with
 ```
-gradle downloadAgent
+./gradlew downloadAgent
 ```
 
 Launch the application with :
@@ -31,5 +31,5 @@ java  -javaagent:build/otel/opentelemetry-javaagent-all-1.17.0.jar -jar build/li
 
 Review distributed tracing in New Relic for the specified application, specifically:
 * Span Attributes do not contain the expected tag : `Dave`
-* Only a single Span is sent to new relic even though we have a Custom Span `slowThing`
+* Only a single Span is sent to new relic even though we have a Custom Span `slowThing` see [here](https://github.com/CraftyFella/micronaut-opentelemetry/blob/main/src/main/java/com/example/SlowThing.java) for custom span code.
 
