@@ -1,24 +1,19 @@
 package com.example;
 
-import io.micronaut.tracing.annotation.NewSpan;
-import io.micronaut.tracing.annotation.SpanTag;
-import io.opentracing.Tracer;
+import io.opentelemetry.extension.annotations.SpanAttribute;
+import io.opentelemetry.extension.annotations.WithSpan;
 import jakarta.inject.Singleton;
 
 @Singleton
 public class SlowThing {
 
-    private final Tracer tracer;
 
-    public SlowThing(Tracer tracer) {
-        this.tracer = tracer;
+    public SlowThing() {
     }
 
-    @NewSpan("slowThing")
-    public String GetSlowThing(@SpanTag("thing") String thing) {
+    @WithSpan("slowThing")
+    public String GetSlowThing(@SpanAttribute("thing") String thing) {
         try {
-            var activeSpan = tracer.activeSpan();
-            activeSpan.setTag("Dave", "was here");
             Thread.sleep(300);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
