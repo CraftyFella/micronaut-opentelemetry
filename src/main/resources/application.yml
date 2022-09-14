@@ -4,7 +4,10 @@ micronaut:
 otel:
   traces:
     exporter: otlp
-
+  metrics:
+    exporter: otlp
+  logs:
+    exporter: otlp
 netty:
   default:
     allocator:
