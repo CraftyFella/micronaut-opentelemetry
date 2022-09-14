@@ -1,16 +1,15 @@
-## Broken Demo of Micronaut and OTLP instrumentation for New Relic
+## Demo of Micronaut and OTLP instrumentation for New Relic
 
-Eventually I'd like this to be an example of how to configure micronaut with open telemetry. Right now it's broken.
+Eventually I'd like this to be an example of how to configure micronaut with open telemetry. Right now it's in a semi working state.
 
-It's using the open telemetry agent from 
+Working:
 
-https://github.com/open-telemetry/opentelemetry-java-instrumentation
+* Spans and Traces being sent to OTLP server
 
+Not working:
 
-and the micronaut annotations for custom spans.
-
-https://micronaut-projects.github.io/micronaut-tracing/latest/guide/#annotations
-
+* Logs being sent to OTLP server
+* Metrics being sent to OTLP server
 
 ## To run the demo:
 
@@ -33,22 +32,10 @@ export OTEL_EXPORTER_OTLP_HEADERS=api-key=your_license_key \
 
 Replace `your_license_key` with your [Account License Key](https://one.newrelic.com/launcher/api-keys-ui.launcher).
 
-Download the OTLP agent with
-```
-./gradlew install
-./gradlew downloadAgent
-```
-
 Launch the application with :
 ```
-./gradlew build
-java  -javaagent:build/otel/opentelemetry-javaagent-all-1.17.0.jar -jar build/libs/demo-0.1-all.jar
+./gradlew run
 curl http://localhost:8080/tracingDem 
 ```
 
 ## What's working and what's not working
-
-* Working - A trace is being sent to new relic
-* Working - trace contains the timings and exceptions
-* Not working - custom span `slowThing` from [here](https://github.com/CraftyFella/micronaut-opentelemetry/blob/main/src/main/java/com/example/SlowThing.java) isn't being added to the trace.
-* Not working - additional attributes are not being added to the span `Dave` from [here](https://github.com/CraftyFella/micronaut-opentelemetry/blob/main/src/main/java/com/example/SlowThing.java)
