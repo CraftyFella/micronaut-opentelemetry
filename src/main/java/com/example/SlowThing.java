@@ -9,14 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 @Slf4j
 public class SlowThing {
+    private HttpBinClient httpBinClient;
 
-
-    private HttpBinClient client1;
-    private OtherSystemClient client2;
-
-    public SlowThing(OtherSystemClient client1, HttpBinClient client2) {
-        this.client2 = client1;
-        this.client1 = client2;
+    public SlowThing(HttpBinClient httpBinClient) {
+        this.httpBinClient = httpBinClient;
     }
 
     @NewSpan("slowThing")
@@ -24,13 +20,7 @@ public class SlowThing {
         try {
             log.info("Info before sleep");
             Thread.sleep(300);
-            // Throw an exception ~25% of the time
-//            if (new Random().nextInt(4) == 0) {
-//                throw new IllegalStateException("Error!");
-//            }
-            client1.get(200);
-            client2.stock("1680502395");
-
+            httpBinClient.get(200);
             log.warn("warn after sleep");
         } catch (InterruptedException e) {
             log.error("error caught", e);
