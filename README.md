@@ -5,11 +5,11 @@ Eventually I'd like this to be an example of how to configure micronaut with ope
 Working:
 
 * Spans and Traces being sent to OTLP server
-
+* Metrics being sent to OTLP server
+* 
 Not working:
 
 * Logs being sent to OTLP server
-* Metrics being sent to OTLP server
 
 ## To run the demo:
 
@@ -17,6 +17,7 @@ Set these environment variables:
 
 ```
 export OTEL_EXPORTER_OTLP_HEADERS=api-key=your_license_key \
+&& export NEW_RELIC_KEY=your_license_key
 && export OTEL_METRIC_EXPORT_INTERVAL=5000 \
 && export OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE=DELTA \
 && export OTEL_EXPORTER_OTLP_METRICS_DEFAULT_HISTOGRAM_AGGREGATION=EXPONENTIAL_BUCKET_HISTOGRAM \

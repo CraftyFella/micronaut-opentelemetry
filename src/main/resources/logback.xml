@@ -8,8 +8,11 @@
             <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="OpenTelemetry" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+    </appender>
 
     <root level="info">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="OpenTelemetry"/>
     </root>
 </configuration>
