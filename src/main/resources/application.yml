@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: dave.demo.tracing
+    name: dave.demo.tracing2
 otel:
   traces:
     exporter: otlp
