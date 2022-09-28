@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: dave.demo.tracing2
+    name: first.application
 otel:
   traces:
     exporter: otlp
@@ -8,6 +8,21 @@ otel:
     exporter: otlp
   logs:
     exporter: otlp
+  exporter:
+    otlp:
+      endpoint: https://otlp.nr-data.net:4317
+      headers: api-key=${NEW_RELIC_KEY}
+      compression: gzip
+      key: ${NEW_RELIC_KEY}
+      instance: ${random.shortuuid}
+    experimental:
+      expoter:
+        otlp:
+          retry:
+            enabled: true
+    metric:
+      export:
+        interval: 5000
 netty:
   default:
     allocator:

@@ -16,13 +16,7 @@ Not Working:
 Set these environment variables:
 
 ```
-export OTEL_EXPORTER_OTLP_HEADERS=api-key=your_license_key \
-&& export NEW_RELIC_KEY=your_license_key
-&& export OTEL_METRIC_EXPORT_INTERVAL=5000 \
-&& export OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp.nr-data.net:4317 \
-&& export OTEL_EXPORTER_OTLP_COMPRESSION=gzip \
-&& export OTEL_EXPERIMENTAL_EXPORTER_OTLP_RETRY_ENABLED=true \
-&& export OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT=4095
+export NEW_RELIC_KEY=your_license_key
 ```
 
 Replace `your_license_key` with your [Account License Key](https://one.newrelic.com/launcher/api-keys-ui.launcher).
@@ -30,5 +24,6 @@ Replace `your_license_key` with your [Account License Key](https://one.newrelic.
 Launch the application with :
 ```
 ./gradlew run
-curl http://localhost:8080/tracingDem 
+curl http://localhost:8080/happy/path 
+curl http://localhost:8080/sad/path 
 ```

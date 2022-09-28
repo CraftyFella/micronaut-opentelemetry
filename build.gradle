@@ -16,17 +16,14 @@ dependencies {
     annotationProcessor("io.micronaut:micronaut-http-validation")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-jackson-databind")
-    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
-    implementation 'io.opentelemetry:opentelemetry-exporter-otlp-common'
-    implementation("io.opentelemetry:opentelemetry-exporter-otlp-logs")
     implementation("jakarta.annotation:jakarta.annotation-api")
     implementation("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
-    implementation("io.micronaut.tracing:micronaut-tracing-opentelemetry-http")
-    runtimeOnly("org.apache.logging.log4j:log4j-api:2.17.2")
-    runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp-common'
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp-logs")
     implementation("io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:1.8.0")
+    implementation("io.micronaut.tracing:micronaut-tracing-opentelemetry-http")
 }
 
 application {

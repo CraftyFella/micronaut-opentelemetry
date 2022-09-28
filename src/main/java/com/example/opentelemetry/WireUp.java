@@ -1,5 +1,7 @@
-package com.example;
+package com.example.opentelemetry;
 
+import io.micronaut.runtime.event.annotation.EventListener;
+import io.micronaut.runtime.server.event.ServerStartupEvent;
 import io.opentelemetry.exporter.internal.retry.RetryPolicy;
 import io.opentelemetry.exporter.internal.retry.RetryUtil;
 import io.opentelemetry.exporter.otlp.logs.OtlpGrpcLogExporter;
@@ -9,24 +11,35 @@ import io.opentelemetry.sdk.logs.SdkLogEmitterProvider;
 import io.opentelemetry.sdk.logs.export.BatchLogProcessor;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import lombok.AllArgsConstructor;
 
-public class OpenTelemetry {
-    public static void addLoggingExporter(LoggingExporterSettings settings) {
+
+@Singleton
+@AllArgsConstructor
+public class WireUp {
+    @Inject
+    private final LoggingConfig config;
+
+    @EventListener
+    void startupHandler(ServerStartupEvent event) {
+
+        addLoggingExporter(config);
+    }
+
+    public static void addLoggingExporter(LoggingConfig config) {
+
         var resource = Resource.getDefault().toBuilder()
-                .put(ResourceAttributes.SERVICE_NAME, settings.serviceName())
-                .put(ResourceAttributes.SERVICE_INSTANCE_ID, settings.serviceInstanceId())
+                .put(ResourceAttributes.SERVICE_NAME, config.getName())
+                .put(ResourceAttributes.SERVICE_INSTANCE_ID, config.getInstance())
                 .build();
-        ;
 
-        if (settings.newRelicKey() == null) {
-            throw new RuntimeException("ooops");
-        }
         var logExporterBuilder =
                 OtlpGrpcLogExporter.builder()
-                        .setEndpoint(settings.otlpEndpoint())
+                        .setEndpoint(config.getEndpoint())
                         .setCompression("gzip")
-                        .addHeader("api-key", settings.newRelicKey());
-
+                        .addHeader("api-key", config.getKey());
 
         RetryUtil.setRetryPolicyOnDelegate(logExporterBuilder, RetryPolicy.getDefault());
 

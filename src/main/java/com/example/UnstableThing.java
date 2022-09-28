@@ -53,12 +53,8 @@ public class UnstableThing {
             log.info("Info before sleep");
             Thread.sleep(300);
 
-            if (bang){
-                throw new RuntimeException("boom baby");
-            }
-
             log.warn("warn after sleep");
-            String response = demo2Client.get(thing);
+            String response = demo2Client.get(thing, bang);
             return "From DB "  + response;
 
         } catch (InterruptedException e) {
