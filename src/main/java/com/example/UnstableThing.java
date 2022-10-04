@@ -1,13 +1,13 @@
 package com.example;
 
 
+import io.micronaut.tracing.annotation.NewSpan;
 import io.micronaut.tracing.annotation.SpanTag;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.baggage.Baggage;
 import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.extension.annotations.WithSpan;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +34,7 @@ public class UnstableThing {
         this.demo2Client = demo2Client;
     }
 
-    @WithSpan("slowThing")
+    @NewSpan("slowThing")
     public String GetThingWhichMightBlowUp(@SpanTag("thing") String thing, Boolean bang) {
 
         Span current = Span.current();
@@ -54,8 +54,8 @@ public class UnstableThing {
             Thread.sleep(300);
 
             log.warn("warn after sleep");
-            String response = demo2Client.get(thing, bang);
-            return "From DB "  + response;
+            demo2Client.get(200);
+            return "From DB ";
 
         } catch (InterruptedException e) {
             log.error("error caught", e);

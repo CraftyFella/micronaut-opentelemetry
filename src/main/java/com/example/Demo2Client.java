@@ -3,8 +3,8 @@ package com.example;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.client.annotation.Client;
 
-@Client("http://localhost:8083")
+@Client("https://httpbin.org")
 public interface Demo2Client {
-    @Get("/demo2/{name}/{blowUp}")
-    String get(String name, Boolean blowUp);
+    @Get("/status/{statusCode}")
+    void get(int statusCode);
 }
