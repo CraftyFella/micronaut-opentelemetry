@@ -4,14 +4,16 @@ package com.example;
 import io.micronaut.tracing.annotation.NewSpan;
 import io.micronaut.tracing.annotation.SpanTag;
 import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.baggage.Baggage;
 import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.context.Context;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
-
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 
 @Singleton
@@ -28,43 +30,47 @@ public class UnstableThing {
                     .setUnit("unit")
                     .build();
 
-    private Demo2Client demo2Client;
+    private ReactiveDemoClient demoClient;
 
-    public UnstableThing(Demo2Client demo2Client) {
-        this.demo2Client = demo2Client;
+    public UnstableThing(ReactiveDemoClient demo2Client) {
+        this.demoClient = demo2Client;
     }
 
     @NewSpan("slowThing")
-    public String GetThingWhichMightBlowUp(@SpanTag("thing") String thing, Boolean bang) {
+    public Mono<String> GetThingWhichMightBlowUp(@SpanTag("thing") String thing,
+                                                 Boolean bang) {
 
+        Context ctx = Context.current();
         Span current = Span.current();
 
-        current.setAttribute("custom-attribute", "custom-attribute");
-
-        Baggage.current()
-                .toBuilder()
-                .put("app.username", "aUser")
-                .build()
-                .makeCurrent();
+        current.setAttribute("custom-attribute1", Thread.currentThread().getName());
+//
+//        Baggage.current()
+//                .toBuilder()
+//                .put("app.username", "aUser")
+//                .build()
+//                .makeCurrent();
 
         aCounter.add(1);
 
-        try {
-            log.info("Info before sleep");
-            Thread.sleep(300);
-
-            log.warn("warn after sleep");
-            demo2Client.get(200);
-            return "From DB ";
-
-        } catch (InterruptedException e) {
-            log.error("error caught", e);
-            throw new RuntimeException(e);
-        }
-        catch (Exception e) {
-            log.error("error caught", e);
-            throw new RuntimeException(e);
-        }
+        return Mono.just("start")
+                .doOnNext(ignored -> {
+                    log.info("Info before sleep " + Thread.currentThread());
+                    current.setAttribute("custom-attribute2", Thread.currentThread().getName());
+                    aCounter.add(1);
+                })
+                .delaySubscription(Duration.of(300, ChronoUnit.MILLIS))
+                .doOnNext(ignored -> {
+                    log.warn("warn after sleep " + Thread.currentThread());
+                    current.setAttribute("custom-attribute3", Thread.currentThread().getName());
+                    aCounter.add(1);
+                })
+                .flatMap(ignored -> demoClient.get())
+                .map(status -> Integer.toString(status.getCode()))
+                .doOnNext(ignored -> {
+                    log.warn("all done " + Thread.currentThread());
+                    aCounter.add(1);
+                });
     }
 }
 

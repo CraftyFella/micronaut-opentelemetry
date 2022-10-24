@@ -10,7 +10,7 @@ otel:
     exporter: otlp
   exporter:
     otlp:
-      endpoint: https://otlp.nr-data.net:4317
+      endpoint: https://otlp.eu01.nr-data.net:4317
       headers: api-key=${NEW_RELIC_KEY}
       compression: gzip
       key: ${NEW_RELIC_KEY}

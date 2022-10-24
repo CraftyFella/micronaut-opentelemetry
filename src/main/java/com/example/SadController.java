@@ -16,9 +16,9 @@ public class SadController {
     @Get(uri="/{name}")
     public String index(String name) {
         log.info("Log in Controller before");
-        String dave = unstableThing.GetThingWhichMightBlowUp(name, true);
+        unstableThing.GetThingWhichMightBlowUp(name, true);
         log.info("Log in Controller after");
-        return dave;
+        return "dave";
     }
 }
 
